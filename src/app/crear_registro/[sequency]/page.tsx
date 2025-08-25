@@ -36,7 +36,7 @@ const CreateRegistro = ({ params }: { params: { sequency: string } }) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5001/api/brands', {
+      const response = await fetch('/marcas-backend.onrender.com/api/brands', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
