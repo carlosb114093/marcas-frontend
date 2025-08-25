@@ -15,7 +15,7 @@ export default function BrandsPage() {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    fetch("http://localhost:5001/api/brands")
+    fetch("https://marcas-backend.onrender.com/api/brands")
       .then((res) => res.json())
       .then((data) => setBrands(data))
       .catch((err) => console.error("Error al cargar:", err));
@@ -40,7 +40,7 @@ export default function BrandsPage() {
   };
 
   const handleDelete = async (id: string) => {
-    await fetch(`http://localhost:5001/api/brands/${id}`, { method: "DELETE" });
+    await fetch(`https://marcas-backend.onrender.com/api/brands/${id}`, { method: "DELETE" });
     setBrands(brands.filter((b) => b.id !== id));
   };
 
