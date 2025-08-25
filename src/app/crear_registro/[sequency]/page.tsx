@@ -15,7 +15,8 @@ const CreateRegistro = () => {
   const { formData, setFormData } = useFormContext();  
   
   const params = useParams();
-  const currentStep = parseInt(params.sequency) || 1;
+  const sequency = params.sequency ? String(params.sequency) : '1';
+  const currentStep = parseInt(sequency) || 1;
  
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;   
