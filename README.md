@@ -21,7 +21,7 @@ Para ejecutar este proyecto de forma local, sigue estos pasos:
 
 1.  Clona el repositorio:
     ```bash
-    git clone [https://github.com/tu-usuario/nombre-del-repo-frontend.git](https://github.com/tu-usuario/nombre-del-repo-frontend.git)
+    git clone (https://github.com/carlosb114093/marcas-frontend)
     ```
 2.  Navega al directorio del proyecto:
     ```bash
@@ -41,5 +41,7 @@ Para ejecutar este proyecto de forma local, sigue estos pasos:
     ```
 
 Servidor Backend
-
 El frontend consume una API REST.estará disponible en `http://localhost:3000`. 
+
+Repositorio Backend
+https://github.com/carlosb114093/marcas-backend
