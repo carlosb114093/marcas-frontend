@@ -6,11 +6,14 @@ import Link from 'next/link';
 import { useFormContext } from '../../../app/context/FormContext'; 
 import Layout from '../layout'; 
 import Indicator from '../../Indicator'; 
+interface CreateRegistroProps {
+  params: { sequency: string };
+}
 
-const CreateRegistro = ({ params }: { params: { sequency: string } }) => {
+const CreateRegistro = ({ params }: CreateRegistroProps) => {
   const router = useRouter();
   const { formData, setFormData } = useFormContext();
- const currentStep = parseInt(params.sequency) || 1;
+  const currentStep = parseInt(params.sequency) || 1;
  
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;   
