@@ -1,7 +1,7 @@
 "use client";
 
 import { ChangeEvent, FormEvent } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link';
 import { useFormContext } from '../../../app/context/FormContext'; 
 import Layout from '../layout'; 
