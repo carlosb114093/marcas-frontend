@@ -1,103 +1,201 @@
+"use client";
+import { useEffect, useState } from "react";
+import { Table, Badge, Button, Form, InputGroup, Navbar, Offcanvas, Nav } from "react-bootstrap";
+import { PencilSquare, Trash, HouseDoor, Speedometer2, Briefcase, FileEarmarkText, Bell, QuestionCircle, Gear } from "react-bootstrap-icons";
 import Image from "next/image";
+import Link from "next/link";
 
-export default function Home() {
+export default function BrandsPage() {
+  const [brands, setBrands] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
+  const [filter, setFilter] = useState("");
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    fetch("http://localhost:5001/api/brands")
+      .then((res) => res.json())
+      .then((data) => setBrands(data))
+      .catch((err) => console.error("Error al cargar:", err));
+  }, []);
+
+  const filteredBrands = brands.filter((b) => {
+    return (
+      b.brand_name.toLowerCase().includes(search.toLowerCase()) &&
+      (filter ? b.brand_status === filter : true)
+    );
+  });
+
+  const renderStatus = (status: string) => {
+    switch (status) {
+      case "Activo":
+        return <Badge bg="success">Activo</Badge>;
+      case "Inactivo":
+        return <Badge bg="warning">Inactivo</Badge>;
+      default:
+        return <Badge bg="secondary">{status}</Badge>;
+    }
+  };
+
+  const handleDelete = async (id: string) => {
+    await fetch(`http://localhost:5001/api/brands/${id}`, { method: "DELETE" });
+    setBrands(brands.filter((b) => b.id !== id));
+  };
+
+  const handleUpdate = (id: string) => {
+    alert(`Actualizar registro con id: ${id}`);
+  };
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="container-fluid">
+      <div className="row">        
+        <div className="d-none d-md-block col-md-3 col-lg-2 bg-light vh-100 p-3">
+          <h5 className="mb-4">Menú</h5>
+          <ul className="nav flex-column">
+            <li className="nav-item">
+              <a className="nav-link text-muted" href="#">
+                <HouseDoor className="me-2" /> Dashboard
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link fw-bold" href="#">
+                <Speedometer2 className="me-2" /> Panel
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link text-muted" href="#">
+                <Briefcase className="me-2" /> Servicios
+              </a>
+            </li>
+            <li className="nav-item">
+              <a className="nav-link active fw-bold text-white bg-danger rounded px-2" href="#">
+                <FileEarmarkText className="me-2" /> Registro de Marca
+              </a>
+            </li>
+          </ul>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+       
+        <div className="col-12 col-md-9 col-lg-10 p-0">          
+          <Navbar expand="md" bg="dark" variant="dark" className="d-md-none">
+            <Button variant="dark" onClick={handleShow} className="me-2">
+              Menú
+            </Button>
+            <Navbar.Brand href="#">Gestión de Marcas</Navbar.Brand>
+            <Navbar.Toggle aria-controls="offcanvasNavbar" />
+            <Navbar.Offcanvas
+              id="offcanvasNavbar"
+              aria-labelledby="offcanvasNavbarLabel"
+              placement="start"
+              show={show}
+              onHide={handleClose}
+            >
+              <Offcanvas.Header closeButton>
+                <Offcanvas.Title id="offcanvasNavbarLabel">Menú</Offcanvas.Title>
+              </Offcanvas.Header>
+              <Offcanvas.Body>
+                <Nav className="justify-content-end flex-grow-1 pe-3">
+                  <Nav.Link href="#">Dashboard</Nav.Link>
+                  <Nav.Link href="#">Panel</Nav.Link>
+                  <Nav.Link href="#">Servicios</Nav.Link>
+                  <Nav.Link href="#">Registro de Marca</Nav.Link>
+                </Nav>
+              </Offcanvas.Body>
+            </Navbar.Offcanvas>
+          </Navbar>
+          
+          <div className="d-flex justify-content-end align-items-center px-3 py-2 bg-dark text-white">
+            <Bell className="me-3" size={18} />
+            <QuestionCircle className="me-3" size={18} />
+            <Gear className="me-3" size={18} />
+            <div className="d-flex align-items-center">
+              <span className="me-2 d-none d-sm-block">carlosb05</span>
+              <Image
+                src="/avatar.png"
+                alt=" "
+                width={32}
+                height={32}
+                className="rounded-circle border border-light"
+              />
+            </div>
+          </div>
+          
+          <h2 className="mb-4 px-3 pt-3">Gestión de Marcas</h2>
+         
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-center px-3 mb-3">  
+          <InputGroup className="w-100 me-md-2 mb-2 mb-md-0">
+            <Form.Control
+              placeholder="Buscar marca..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </InputGroup>
+          
+          <Form.Select className="w-100 w-md-auto me-md-2 mb-2 mb-md-0">
+            <option value="">Todos</option>
+            <option value="activo">Activo</option>
+            <option value="inactivo">Inactivo</option>
+          </Form.Select>
+          
+          <Link href="/crear_registro/${sequency}" passHref>
+            <Button variant="danger" className="w-100 w-md-auto py-2 px-4">
+              Nuevo Registro
+            </Button>
+          </Link>
+        </div>          
+        
+          <div className="table-responsive px-3">
+            <Table hover bordered className="align-middle shadow-sm">
+              <thead className="table-light">
+                <tr>
+                  <th>Marca</th>
+                  <th>Propietario</th>
+                  <th className="d-none d-sm-table-cell">Fecha creación</th>
+                  <th>Estado</th>
+                  <th className="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+              {filteredBrands.length > 0 ? (
+                filteredBrands.map((brand) => (
+                  <tr key={brand.id}>
+                    <td>{brand.brand_name}</td>
+                    <td>{brand.brand_owner}</td>
+                    <td className="d-none d-sm-table-cell">{brand.date}</td>
+                    <td>{renderStatus(brand.brand_status)}</td>
+                    <td className="text-center">
+                      <Button
+                        variant="outline-primary"
+                        size="sm"
+                        className="me-2"
+                        onClick={() => handleUpdate(brand.id)}
+                      >
+                        <PencilSquare />
+                      </Button>
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        onClick={() => handleDelete(brand.id)}
+                      >
+                        <Trash />
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={5} className="text-center">
+                    No hay registros disponibles
+                  </td>
+                </tr>
+              )}
+            </tbody>
+              
+            </Table>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
