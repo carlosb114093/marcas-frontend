@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, FormEvent } from 'react';
+import { use,ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useFormContext } from '../../../app/context/FormContext'; 
@@ -13,7 +13,8 @@ interface CreateRegistroProps {
 const CreateRegistro = ({ params }: CreateRegistroProps) => {
   const router = useRouter();
   const { formData, setFormData } = useFormContext();
-  const currentStep = parseInt(params.sequency) || 1;
+  const resolvedParams = use(params); 
+  const currentStep = parseInt(resolvedParams.sequency)
  
   const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;   
