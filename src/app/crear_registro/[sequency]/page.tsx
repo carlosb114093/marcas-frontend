@@ -1,6 +1,6 @@
 "use client";
 
-import { use,ChangeEvent, FormEvent } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useFormContext } from '../../../app/context/FormContext'; 
@@ -41,7 +41,7 @@ const CreateRegistro = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await fetch('/marcas-backend.onrender.com/api/brands', {
+      const response = await fetch('https://marcas-backend.onrender.com/api/brands', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
